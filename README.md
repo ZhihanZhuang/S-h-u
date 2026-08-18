@@ -19,12 +19,12 @@ WebStorm's GitHub integration can also handle login and push from the Git tool w
 
 ## Alphabet audio
 
-The Alphabet section has one reserved MP3 filename per letter. Add your recordings to `audio/letters/` using this order:
+The Alphabet section has one WAV filename per letter. The current recordings are converted from the supplied M4A files and stored in `audio/letters/` using this order:
 
-- `letter-01.mp3` to `letter-20.mp3`: vowels, in the order shown on the site
-- `letter-21.mp3` to `letter-44.mp3`: consonants, in the order shown on the site
+- `letter-01.wav` to `letter-20.wav`: vowels, in the order shown on the site
+- `letter-21.wav` to `letter-44.wav`: consonants, in the order shown on the site
 
-The website already has touch/click playback controls. Until an MP3 exists, the card shows `Audio not added`.
+The website already has touch/click playback controls. The example word on each card follows the corresponding audio filename.
 
 ## Online editing
 

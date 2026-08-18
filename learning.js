@@ -5,6 +5,11 @@
     vowel: ["a", "e", "i", "o", "u", "ʉ", "ɔ", "ø", "ã", "ẽ", "ĩ", "ũ", "ë", "â", "ê", "î", "û", "ô", "ɔ̂", "ē"],
     consonant: ["w", "d", "s", "z", "ɕ", "v", "c", "b", "n", "m", "l", "k", "h", "g", "f", "p", "t", "r", "ŋ", "ħ", "ʑ", "tɕ", "cɕ", "cz"]
   };
+  const audioExamples = {
+    a: "ara", e: "gecze", i: "sêħi", o: "guêdo", u: "ubu", "ʉ": "ʉëriã", "ɔ": "dãsɔ", "ø": "bøcz",
+    "ã": "ãmô", "ẽ": "sẽti", "ĩ": "ĩħer", "ũ": "kũgɔ", "ë": "ëħu", "â": "dofâ", "ê": "bêsê", "î": "îħiã", "û": "âgû", "ô": "lôdi", "ɔ̂": "ɔcɔ̂", "ē": "zêrē",
+    w: "wêdã", d: "diħië", s: "së", z: "zħnʉ", "ɕ": "ɕɔbãħio", v: "vucɕĩ", c: "ɔcɔ̂", b: "bêɕã", n: "nõ", m: "mê", l: "lĩ", k: "kũgɔ", h: "huɕē", g: "ga", f: "fõ", p: "piɔriã", t: "loti", r: "virë", "ŋ": "ŋabu", "ħ": "bãħio", "ʑ": "ʑĩ", "tɕ": "tɕiu", "cɕ": "cɕē", cz: "czøħo"
+  };
   const dailyButton = document.querySelector("#dailyWordButton");
 
   const todayEntry = () => {
@@ -40,11 +45,12 @@
         const card = document.createElement("article"); card.className = "letter-card";
         const button = document.createElement("button"); button.type = "button"; button.className = "letter-button"; button.setAttribute("aria-label", `Play pronunciation for ${letter}`);
         button.innerHTML = `<span class="letter-symbol"></span><span class="play-label">Play sound</span>`; button.firstChild.textContent = letter;
-        const audio = document.createElement("audio"); audio.preload = "none"; audio.src = `audio/letters/letter-${String(offset + index + 1).padStart(2, "0")}.mp3`;
-        const sample = entries.find((entry) => entry.native.normalize("NFC").startsWith(letter.normalize("NFC")));
+        const audio = document.createElement("audio"); audio.preload = "none"; audio.src = `audio/letters/letter-${String(offset + index + 1).padStart(2, "0")}.wav`;
+        const sampleNative = audioExamples[letter];
+        const sample = entries.find((entry) => entry.native.normalize("NFC") === sampleNative.normalize("NFC"));
         const example = document.createElement("p"); example.className = "letter-example"; example.innerHTML = "<span>Example</span>";
-        const word = document.createElement("strong"); word.textContent = sample ? `${sample.native} — ${sample.english}` : "No example yet"; example.append(word);
-        const status = document.createElement("p"); status.className = "audio-status"; status.textContent = "Audio not added";
+        const word = document.createElement("strong"); word.textContent = sample ? `${sample.native} — ${sample.english}` : `${sampleNative} — example`; example.append(word);
+        const status = document.createElement("p"); status.className = "audio-status"; status.textContent = "Ready to play";
         button.addEventListener("click", () => audio.play().then(() => { status.textContent = "Playing"; }).catch(() => { status.textContent = "Add MP3 to play"; }));
         audio.addEventListener("ended", () => { status.textContent = "Audio ready"; });
         card.append(button, example, status, audio); grid.append(card);
