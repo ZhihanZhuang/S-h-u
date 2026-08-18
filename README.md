@@ -2,6 +2,21 @@
 
 This repository contains the Sãhëħëħu-English dictionary, deployed as a static GitHub Pages site.
 
+## Open in WebStorm
+
+Open this folder as a project in WebStorm. No package installation is required. Use the built-in terminal and run `python3 -m http.server 4173`, then open `http://127.0.0.1:4173/`.
+
+Before pushing, set the repository remote if needed:
+
+```bash
+git remote set-url origin https://github.com/ZhihanZhuang/S-h-u.git
+git add .
+git commit -m "Update dictionary"
+git push origin main
+```
+
+WebStorm's GitHub integration can also handle login and push from the Git tool window.
+
 ## Online editing
 
 The editor is private by possession of the GitHub credential: click **GitHub sync** and enter a fine-grained token that has `Contents: Read and write` access to `ZhihanZhuang/S-h-u`. The token is stored only in the current browser's local storage. Each saved entry is committed directly to `data.js` on the `main` branch, so the change becomes part of the repository and is picked up by GitHub Pages.
