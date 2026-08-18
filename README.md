@@ -17,6 +17,15 @@ git push origin main
 
 WebStorm's GitHub integration can also handle login and push from the Git tool window.
 
+## Alphabet audio
+
+The Alphabet section has one reserved MP3 filename per letter. Add your recordings to `audio/letters/` using this order:
+
+- `letter-01.mp3` to `letter-20.mp3`: vowels, in the order shown on the site
+- `letter-21.mp3` to `letter-44.mp3`: consonants, in the order shown on the site
+
+The website already has touch/click playback controls. Until an MP3 exists, the card shows `Audio not added`.
+
 ## Online editing
 
 The editor is private by possession of the GitHub credential: click **GitHub sync** and enter a fine-grained token that has `Contents: Read and write` access to `ZhihanZhuang/S-h-u`. The token is stored only in the current browser's local storage. Each saved entry is committed directly to `data.js` on the `main` branch, so the change becomes part of the repository and is picked up by GitHub Pages.

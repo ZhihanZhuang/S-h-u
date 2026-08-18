@@ -7,6 +7,10 @@
   const GITHUB_TOKEN_KEY = "sahehehu-zdi-github-token-v1";
   const GITHUB_REPO = "ZhihanZhuang/S-h-u";
   const GITHUB_DATA_PATH = "data.js";
+  const alphabet = {
+    vowel: ["a", "e", "i", "o", "u", "ʉ", "ɔ", "ø", "ã", "ẽ", "ĩ", "ũ", "ë", "â", "ê", "î", "û", "ô", "ɔ̂", "ē"],
+    consonant: ["w", "d", "s", "z", "ɕ", "v", "c", "b", "n", "m", "l", "k", "h", "g", "f", "p", "t", "r", "ŋ", "ħ", "ʑ", "tɕ", "cɕ", "cz"]
+  };
   const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
   const savedPageSize = Number(localStorage.getItem(PAGE_SIZE_KEY));
   const state = { query: "", pos: "", category: "", sort: "native", page: 1, pageSize: [20, 40, 60, 100].includes(savedPageSize) ? savedPageSize : 60 };
@@ -22,6 +26,7 @@
     dailyWordButton: document.querySelector("#dailyWordButton"),
     dailyNative: document.querySelector("#dailyNative"),
     dailyEnglish: document.querySelector("#dailyEnglish"),
+    alphabetGroups: document.querySelector("#alphabetGroups"),
     sortButtons: [...document.querySelectorAll("[data-sort]")],
     reset: document.querySelector("#resetFilters"),
     add: document.querySelector("#addEntry"),
@@ -109,6 +114,63 @@
     elements.dailyEnglish.textContent = entry.english;
     elements.dailyWordButton.setAttribute("aria-label", `Open today's word: ${entry.native}, ${entry.english}`);
     elements.dailyWordButton.onclick = () => showEntry(entry);
+  }
+
+  function alphabetAudioPath(index) { return `audio/letters/letter-${String(index + 1).padStart(2, "0")}.mp3`; }
+
+  function exampleForLetter(letter) {
+    return indexedEntries.find((entry) => entry.native.normalize("NFC").startsWith(letter.normalize("NFC"))) || null;
+  }
+
+  function renderAlphabet() {
+    const fragment = document.createDocumentFragment();
+    for (const [kind, letters] of Object.entries(alphabet)) {
+      const group = document.createElement("section");
+      group.className = "alphabet-group";
+      const heading = document.createElement("h3");
+      heading.textContent = kind;
+      group.append(heading);
+      const grid = document.createElement("div");
+      grid.className = "alphabet-grid";
+      const offset = kind === "vowel" ? 0 : alphabet.vowel.length;
+      letters.forEach((letter, index) => {
+        const card = document.createElement("article");
+        card.className = "letter-card";
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "letter-button";
+        button.setAttribute("aria-label", `Play pronunciation for ${letter}`);
+        const symbol = document.createElement("span");
+        symbol.className = "letter-symbol";
+        symbol.textContent = letter;
+        const play = document.createElement("span");
+        play.className = "play-label";
+        play.textContent = "Play sound";
+        button.append(symbol, play);
+        const audio = document.createElement("audio");
+        audio.preload = "none";
+        audio.src = alphabetAudioPath(offset + index);
+        const example = exampleForLetter(letter);
+        const exampleLabel = document.createElement("p");
+        exampleLabel.className = "letter-example";
+        exampleLabel.innerHTML = "<span>Example</span>";
+        const exampleWord = document.createElement("strong");
+        exampleWord.textContent = example ? `${example.native} — ${example.english}` : "No example yet";
+        exampleLabel.append(exampleWord);
+        const status = document.createElement("p");
+        status.className = "audio-status";
+        status.textContent = "Audio not added";
+        button.addEventListener("click", () => {
+          audio.play().then(() => { status.textContent = "Playing"; }).catch(() => { status.textContent = "Add MP3 to play"; });
+        });
+        audio.addEventListener("ended", () => { status.textContent = "Audio ready"; });
+        card.append(button, exampleLabel, status, audio);
+        grid.append(card);
+      });
+      group.append(grid);
+      fragment.append(group);
+    }
+    elements.alphabetGroups.replaceChildren(fragment);
   }
 
   function persist() {
@@ -384,5 +446,6 @@
   });
 
   renderDailyWord();
+  renderAlphabet();
   render();
 })();
