@@ -19,6 +19,11 @@
           <p>Sãhëħëħu–English Dictionary</p>
         </div>
       </div>
+      <nav class="site-nav" aria-label="Dictionary navigation">
+        <a href="index.html" aria-current="page">Dictionary</a>
+        <a href="daily.html">Daily word</a>
+        <a href="alphabet.html">Alphabet</a>
+      </nav>
       <div class="total-count" aria-label="Dictionary size"><strong id="headerCount">0</strong><span>entries</span></div>
     </div>
   </header>
@@ -54,30 +59,7 @@
       </div>
     </section>
 
-    <section class="daily-word" aria-labelledby="dailyWordHeading">
-      <div class="daily-word-copy">
-        <p class="eyebrow">Daily word</p>
-        <h2 id="dailyWordHeading">Today's word</h2>
-      </div>
-      <button id="dailyWordButton" class="daily-word-entry" type="button" aria-label="Open today's word">
-        <span id="dailyNative" class="daily-native"></span>
-        <span class="daily-divider" aria-hidden="true">—</span>
-        <span id="dailyEnglish" class="daily-english"></span>
-      </button>
-    </section>
-
-    <section class="alphabet-section" aria-labelledby="alphabetHeading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Alphabet</p>
-          <h2 id="alphabetHeading">Letters and pronunciation</h2>
-        </div>
-        <p class="section-note">Tap a letter to play its sound. Audio files can be added later.</p>
-      </div>
-      <div id="alphabetGroups"></div>
-    </section>
-
-    <section class="results-section" aria-live="polite" aria-busy="false">
+    <section class="results-section" aria-live="polite" aria-busy="false" hidden>
       <div class="results-bar">
         <p><strong id="resultCount">0</strong> <span id="resultLabel">entries</span></p>
         <div class="results-actions">

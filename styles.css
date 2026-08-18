@@ -59,6 +59,9 @@ button, select { cursor: pointer; }
 .brand img { flex: 0 0 auto; border-radius: 5px; }
 .brand h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 28px; line-height: 1.1; font-weight: 600; }
 .brand p { margin: 4px 0 0; color: #c9ddda; font-size: 13px; }
+.site-nav { display: flex; gap: 4px; margin-left: auto; }
+.site-nav a { padding: 8px 10px; color: #c9ddda; border-radius: 4px; font-size: 13px; text-decoration: none; white-space: nowrap; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: white; background: rgba(255,255,255,.14); }
 .total-count { display: flex; align-items: baseline; gap: 7px; color: #c9ddda; white-space: nowrap; }
 .total-count strong { color: white; font-size: 21px; }
 .total-count span { font-size: 13px; }
@@ -110,6 +113,12 @@ select { height: 38px; padding: 0 34px 0 11px; color: var(--ink); background: va
 .daily-native { color: var(--brand); font-family: Georgia, "Times New Roman", serif; font-size: 25px; }
 .daily-divider { color: var(--muted); }
 .daily-english { color: var(--brand-2); font-size: 18px; font-weight: 700; }
+.feature-page { margin: 30px 0; }
+.daily-feature { max-width: 720px; padding: 36px; background: var(--paper); border: 1px solid var(--line); border-top: 5px solid var(--accent); border-radius: 6px; }
+.daily-feature h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 32px; }
+.daily-feature .daily-word-entry { margin: 22px 0 8px; padding: 0; }
+.feature-meta { margin: 0; color: var(--muted); font-size: 13px; }
+.daily-feature .example-block { margin-left: 0; margin-right: 0; }
 
 .alphabet-section { margin: 28px 0 0; padding: 24px 0 8px; border-top: 1px solid var(--line); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
@@ -197,7 +206,8 @@ dialog::backdrop { background: rgba(11, 28, 26, .55); }
   .header-inner, main { width: min(100% - 24px, 1180px); }
   .header-inner { min-height: 78px; }
   .brand h1 { font-size: 23px; }
-  .brand p, .total-count span { display: none; }
+  .brand p, .total-count, .site-nav a:not([aria-current="page"]) { display: none; }
+  .site-nav { margin-left: auto; }
   .search-band { padding-top: 18px; }
   .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .filter-row label { min-width: 0; }
