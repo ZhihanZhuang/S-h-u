@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sãhëħëħu to English online dictionary">
+  <meta name="theme-color" content="#123f3b">
+  <title>Sãhëħëħu Zdi</title>
+  <link rel="icon" href="mark.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="mark.png" width="42" height="42" alt="" aria-hidden="true">
+        <div>
+          <h1>Sãhëħëħu Zdi</h1>
+          <p>Sãhëħëħu–English Dictionary</p>
+        </div>
+      </div>
+      <div class="total-count" aria-label="Dictionary size"><strong id="headerCount">0</strong><span>entries</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="search-band" aria-label="Dictionary search">
+      <div class="search-row">
+        <label class="search-box">
+          <span class="sr-only">Search dictionary</span>
+          <span class="search-symbol" aria-hidden="true"></span>
+          <input id="searchInput" type="search" autocomplete="off" placeholder="Search Sãhëħëħu or English" autofocus>
+          <button id="clearSearch" class="clear-button" type="button" aria-label="Clear search" title="Clear search">×</button>
+        </label>
+      </div>
+
+      <div class="filter-row">
+        <label>
+          <span>Part of speech</span>
+          <select id="posFilter"><option value="">All parts of speech</option></select>
+        </label>
+        <label>
+          <span>Category</span>
+          <select id="categoryFilter"><option value="">All categories</option></select>
+        </label>
+        <fieldset class="sort-control">
+          <legend>Sort</legend>
+          <div class="segments">
+            <button type="button" data-sort="native" aria-pressed="true">Sãhëħëħu</button>
+            <button type="button" data-sort="english" aria-pressed="false">English</button>
+            <button type="button" data-sort="source" aria-pressed="false">Source</button>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <section class="daily-word" aria-labelledby="dailyWordHeading">
+      <div class="daily-word-copy">
+        <p class="eyebrow">Daily word</p>
+        <h2 id="dailyWordHeading">Today's word</h2>
+      </div>
+      <button id="dailyWordButton" class="daily-word-entry" type="button" aria-label="Open today's word">
+        <span id="dailyNative" class="daily-native"></span>
+        <span class="daily-divider" aria-hidden="true">—</span>
+        <span id="dailyEnglish" class="daily-english"></span>
+      </button>
+    </section>
+
+    <section class="results-section" aria-live="polite" aria-busy="false">
+      <div class="results-bar">
+        <p><strong id="resultCount">0</strong> <span id="resultLabel">entries</span></p>
+        <div class="results-actions">
+          <label class="page-size-control">
+            <span>Per page</span>
+            <select id="pageSize" aria-label="Entries per page">
+              <option value="20">20</option>
+              <option value="40">40</option>
+              <option value="60" selected>60</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+          <button id="resetFilters" class="text-button" type="button">Reset filters</button>
+          <button id="exportData" class="secondary-button" type="button" title="Export the current dictionary as CSV">Export CSV</button>
+          <button id="githubSync" class="secondary-button" type="button">GitHub sync</button>
+          <button id="addEntry" class="primary-button" type="button">Add entry</button>
+        </div>
+      </div>
+
+      <div class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Sãhëħëħu</th>
+              <th scope="col">English</th>
+              <th scope="col">Part of speech</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" hidden>
+          <strong>No entries found</strong>
+          <p>Try a different spelling or remove a filter.</p>
+        </div>
+      </div>
+
+      <nav class="pagination" aria-label="Dictionary pages">
+        <button id="previousPage" type="button" aria-label="Previous page">‹</button>
+        <span>Page <strong id="currentPage">1</strong> of <strong id="pageCount">1</strong></span>
+        <button id="nextPage" type="button" aria-label="Next page">›</button>
+      </nav>
+    </section>
+  </main>
+
+  <dialog id="entryDialog">
+    <div id="entryView">
+      <div class="dialog-header">
+        <div>
+          <p id="dialogMeta"></p>
+          <h2 id="dialogNative"></h2>
+        </div>
+        <button class="icon-button close-dialog" type="button" aria-label="Close entry" title="Close">×</button>
+      </div>
+      <p id="dialogEnglish" class="dialog-english"></p>
+      <div id="dialogExampleBlock" class="example-block" hidden>
+        <span>Example</span>
+        <p id="dialogExample"></p>
+        <p id="dialogExampleTranslation" class="translation"></p>
+      </div>
+      <div class="dialog-actions">
+        <button id="copyEntry" class="secondary-button" type="button">Copy entry</button>
+        <button id="editEntry" class="primary-button" type="button">Edit entry</button>
+      </div>
+    </div>
+
+    <form id="entryForm" hidden>
+      <div class="dialog-header form-heading">
+        <div>
+          <p>Dictionary entry</p>
+          <h2 id="formTitle">Edit entry</h2>
+        </div>
+        <button class="icon-button close-dialog" type="button" aria-label="Close editor" title="Close">×</button>
+      </div>
+      <div class="form-grid">
+        <label>
+          <span>Sãhëħëħu</span>
+          <input id="editNative" name="native" required autocomplete="off">
+        </label>
+        <label>
+          <span>English</span>
+          <input id="editEnglish" name="english" required autocomplete="off">
+        </label>
+        <label>
+          <span>Part of speech</span>
+          <input id="editPos" name="partOfSpeech" list="posSuggestions" autocomplete="off">
+        </label>
+        <label>
+          <span>Category</span>
+          <input id="editCategory" name="category" list="categorySuggestions" autocomplete="off">
+        </label>
+        <label class="wide-field">
+          <span>Example in Sãhëħëħu</span>
+          <textarea id="editExample" name="example" rows="3"></textarea>
+        </label>
+        <label class="wide-field">
+          <span>Example translation</span>
+          <textarea id="editExampleTranslation" name="exampleTranslation" rows="3"></textarea>
+        </label>
+      </div>
+      <div class="dialog-actions">
+        <button id="cancelEdit" class="secondary-button" type="button">Cancel</button>
+        <button class="primary-button" type="submit">Save changes</button>
+      </div>
+      <datalist id="posSuggestions"></datalist>
+      <datalist id="categorySuggestions"></datalist>
+    </form>
+  </dialog>
+
+  <dialog id="githubDialog">
+    <form id="githubForm">
+      <div class="dialog-header form-heading">
+        <div><p>Private editing</p><h2>GitHub sync</h2></div>
+        <button class="icon-button" id="closeGithub" type="button" aria-label="Close GitHub settings">×</button>
+      </div>
+      <div class="form-grid github-form-grid">
+        <p class="wide-field github-help">Enter a fine-grained GitHub token with access to this repository's Contents. It stays in this browser and is never included in the website files.</p>
+        <label class="wide-field"><span>GitHub token</span><input id="githubToken" type="password" autocomplete="off" placeholder="github_pat_..." /></label>
+        <p id="githubStatus" class="wide-field github-status" role="status"></p>
+      </div>
+      <div class="dialog-actions"><button id="cancelGithub" class="secondary-button" type="button">Cancel</button><button class="primary-button" type="submit">Save token</button></div>
+    </form>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
