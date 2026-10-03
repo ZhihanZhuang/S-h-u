@@ -22,7 +22,7 @@ WebStorm's GitHub integration can also handle login and push from the Git tool w
 The Alphabet section has one WAV filename per letter. The current recordings are converted from the supplied M4A files and stored in `audio/letters/` using this order:
 
 - `letter-01.wav` to `letter-20.wav`: vowels, in the order shown on the site
-- `letter-21.wav` to `letter-44.wav`: consonants, in the order shown on the site
+- `letter-21.wav` to `letter-45.wav`: consonants, in the order shown on the site (`letter-45.wav` is `rʑ`)
 
 The website already has touch/click playback controls. The example word on each card follows the corresponding audio filename.
 

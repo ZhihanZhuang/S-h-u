@@ -3,12 +3,12 @@
   const entries = window.DICTIONARY_DATA.entries;
   const alphabet = {
     vowel: ["a", "e", "i", "o", "u", "ʉ", "ɔ", "ø", "ã", "ẽ", "ĩ", "ũ", "ë", "â", "ê", "î", "û", "ô", "ɔ̂", "ē"],
-    consonant: ["w", "d", "s", "z", "ɕ", "v", "c", "b", "n", "m", "l", "k", "h", "g", "f", "p", "t", "r", "ŋ", "ħ", "ʑ", "tɕ", "cɕ", "cz"]
+    consonant: ["w", "d", "s", "z", "ɕ", "v", "c", "b", "n", "m", "l", "k", "h", "g", "f", "p", "t", "r", "ŋ", "ħ", "ʑ", "tɕ", "cɕ", "cz", "rʑ"]
   };
   const audioExamples = {
     a: "ara", e: "gecze", i: "sêħi", o: "guêdo", u: "ubu", "ʉ": "ʉëriã", "ɔ": "dãsɔ", "ø": "bøcz",
     "ã": "ãmô", "ẽ": "sẽti", "ĩ": "ĩħer", "ũ": "kũgɔ", "ë": "ëħu", "â": "dofâ", "ê": "bêsê", "î": "îħiã", "û": "âgû", "ô": "lôdi", "ɔ̂": "ɔcɔ̂", "ē": "zêrē",
-    w: "wêdã", d: "diħië", s: "së", z: "zħnʉ", "ɕ": "ɕɔbãħio", v: "vucɕĩ", c: "ɔcɔ̂", b: "bêɕã", n: "nõ", m: "mê", l: "lĩ", k: "kũgɔ", h: "huɕē", g: "ga", f: "fõ", p: "piɔriã", t: "loti", r: "virë", "ŋ": "ŋabu", "ħ": "bãħio", "ʑ": "ʑĩ", "tɕ": "tɕiu", "cɕ": "cɕē", cz: "czøħo"
+    w: "wêdã", d: "diħië", s: "së", z: "zħnʉ", "ɕ": "ɕɔbãħio", v: "vucɕĩ", c: "ɔcɔ̂", b: "bêɕã", n: "nõ", m: "mê", l: "lĩ", k: "kũgɔ", h: "huɕē", g: "ga", f: "fõ", p: "piɔriã", t: "loti", r: "virë", "ŋ": "ŋabu", "ħ": "bãħio", "ʑ": "ʑĩ", "tɕ": "tɕiu", "cɕ": "cɕē", cz: "czøħo", "rʑ": "gørʑin"
   };
   const dailyButton = document.querySelector("#dailyWordButton");
 
