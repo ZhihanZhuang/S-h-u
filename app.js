@@ -9,12 +9,13 @@
   const GITHUB_DATA_PATH = "data.js";
   const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
   const savedPageSize = Number(localStorage.getItem(PAGE_SIZE_KEY));
-  const state = { query: "", pos: "", category: "", sort: "native", page: 1, hasSearched: false, pageSize: [20, 40, 60, 100].includes(savedPageSize) ? savedPageSize : 60 };
+  const state = { query: "", searchField: "english", pos: "", category: "", sort: "native", page: 1, hasSearched: false, pageSize: [20, 40, 60, 100].includes(savedPageSize) ? savedPageSize : 60 };
   let currentEntry = null;
 
   const elements = {
     headerCount: document.querySelector("#headerCount"),
     search: document.querySelector("#searchInput"),
+    searchFieldButtons: [...document.querySelectorAll("[data-search-field]")],
     clear: document.querySelector("#clearSearch"),
     pos: document.querySelector("#posFilter"),
     category: document.querySelector("#categoryFilter"),
@@ -158,20 +159,44 @@
     elements.category.value = currentCategory;
   }
 
+  function levenshtein(a, b) {
+    const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+      let previous = row[0]; row[0] = i;
+      for (let j = 1; j <= b.length; j++) {
+        const current = row[j];
+        row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (a[i - 1] === b[j - 1] ? 0 : 1));
+        previous = current;
+      }
+    }
+    return row[b.length];
+  }
+
+  function searchScore(entry, term) {
+    const value = fold(entry[state.searchField]);
+    if (!term) return 0;
+    if (value === term) return 0;
+    if (value.startsWith(term)) return 1;
+    const words = value.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+    if (words.some((word) => word.startsWith(term))) return 2;
+    if (value.includes(term)) return 3;
+    const distance = Math.min(...words.map((word) => levenshtein(term, word)));
+    return distance <= Math.max(1, Math.ceil(term.length * 0.35)) ? 4 : Infinity;
+  }
+
   function filteredEntries() {
     const terms = fold(state.query).split(/\s+/).filter(Boolean);
-    const filtered = indexedEntries.filter((entry) =>
-      (!state.pos || entry.partOfSpeech === state.pos) &&
-      (!state.category || entry.category === state.category) &&
-      terms.every((term) => entry.searchText.includes(term))
-    );
+    const filtered = indexedEntries.map((entry) => ({ entry, score: terms.length ? Math.min(...terms.map((term) => searchScore(entry, term))) : 0 }))
+      .filter(({ entry, score }) => (!state.pos || entry.partOfSpeech === state.pos) && (!state.category || entry.category === state.category) && score !== Infinity);
 
     return filtered.sort((a, b) => {
-      if (state.sort === "source") return a.sourceOrder - b.sourceOrder;
+      if (terms.length && a.score !== b.score) return a.score - b.score;
+      const left = a.entry; const right = b.entry;
+      if (state.sort === "source") return left.sourceOrder - right.sourceOrder;
       const field = state.sort === "english" ? "english" : "native";
-      const primary = collator.compare(a[field], b[field]);
-      return primary || collator.compare(a.english, b.english) || a.sourceOrder - b.sourceOrder;
-    });
+      const primary = collator.compare(left[field], right[field]);
+      return primary || collator.compare(left.english, right.english) || left.sourceOrder - right.sourceOrder;
+    }).map(({ entry }) => entry);
   }
 
   function makeCell(text, className) {
@@ -340,6 +365,12 @@
     render();
   });
   elements.search.addEventListener("input", () => { state.query = elements.search.value; resetPageAndRender(); });
+  elements.searchFieldButtons.forEach((button) => button.addEventListener("click", () => {
+    state.searchField = button.dataset.searchField;
+    elements.searchFieldButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+    elements.search.placeholder = state.searchField === "english" ? "Search in English" : "Search in Sahehehu";
+    if (state.query) resetPageAndRender();
+  }));
   elements.clear.addEventListener("click", () => { elements.search.value = ""; state.query = ""; elements.search.focus(); resetPageAndRender(); });
   elements.pos.addEventListener("change", () => { state.pos = elements.pos.value; resetPageAndRender(); });
   elements.category.addEventListener("change", () => { state.category = elements.category.value; resetPageAndRender(); });
